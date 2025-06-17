@@ -26,7 +26,7 @@ Create watcher.json
   "enable_logging": true,
   "build_command": "build -o build/myapp",
   "post_build_move": true
-}
+}```
 
 ## Use by structure
 cfg := &gobuildwatcher.Config{
