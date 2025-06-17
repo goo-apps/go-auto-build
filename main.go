@@ -1,3 +1,6 @@
+// Project: gobuild-watcher (no third-party dependencies)
+// Purpose: Watch for file changes in Go projects and auto-build + install binaries.
+
 package main
 
 import (
@@ -10,7 +13,7 @@ import (
 	"strings"
 
 	"github.com/goo-apps/go-auto-build/logger"
-	"github.com/goo-apps/go-auto-build/pkg/watcher"
+	"github.com/goo-apps/go-auto-build/watcher"
 )
 
 // CLI Entrypoint
