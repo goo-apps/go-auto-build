@@ -1,0 +1,8 @@
+config_path = ""
+output_binary = "build/test-app"
+poll_interval_seconds = 15
+watch_ext = ""
+project_root = "."
+enable_logging = true
+build_command = ""
+post_build_move = false

@@ -1,0 +1,11 @@
+config_path: ""
+output_binary: "build/test-app"
+poll_interval_seconds: 1
+watch_ext: ""
+project_root: "."
+enable_logging: true
+build_command: ""
+post_build_move: false
+exclude_paths:
+  - /Users/ts-rohan.das/go-workspace/go-auto-build(native)/build
+  - /Users/ts-rohan.das/go-workspace/go-auto-build(native)/watcher.yaml

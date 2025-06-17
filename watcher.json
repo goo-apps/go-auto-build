@@ -1,7 +1,7 @@
 {
-  "config_path": "/Users/ts-rohan.das/go_vpn/resource.toml",
+  "config_path": "",
   "output_binary": "build/test-app",
-  "poll_interval_seconds": 1,
+  "poll_interval_seconds": 15,
   "watch_ext": ".go,.json",
   "project_root": ".",
   "enable_logging": true,
