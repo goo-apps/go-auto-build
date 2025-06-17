@@ -23,17 +23,11 @@ func NewWatcher(cfg *Config) *GoBuildWatcher {
 }
 
 func (w *GoBuildWatcher) Start() {
-	logger.Info("Starting watcher...")
-
-	go func() {
-		for {
-			w.RunOnce()
-			time.Sleep(time.Duration(w.cfg.PollInterval) * time.Second)
-		}
-	}()
-
-	// Block forever so Start never returns
-	select {}
+    logger.Info("Watching ...")
+    for {
+        w.RunOnce()
+        time.Sleep(time.Duration(w.cfg.PollInterval) * time.Second)
+    }
 }
 
 func (w *GoBuildWatcher) RunOnce() {
