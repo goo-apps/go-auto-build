@@ -14,22 +14,7 @@ A pluggable Go package build system using only Go standard libraries. This packa
 ```sh
 go get github.com/goo-apps/go-auto-build
 
-Create watcher.json
-```sh
-{
-  "config_path": "/Users/rohan/go_project/resource.toml",
-  "output_binary": "build/myapp",
-  "install_path": "/usr/local/bin/myapp",
-  "poll_interval_seconds": 2,
-  "watch_ext": ".go,.json",
-  "project_root": ".",
-  "enable_logging": true,
-  "build_command": "build -o build/myapp",
-  "post_build_move": true
-}
-go run main.go -config watcher.json
-
-## Use by structure
+## Use
 cfg := &gobuildwatcher.Config{
 		ConfigPath:     "resource.toml",
 		OutputBinary:   "build/mybin",
