@@ -23,11 +23,17 @@ func NewWatcher(cfg *Config) *GoBuildWatcher {
 }
 
 func (w *GoBuildWatcher) Start() {
-	logger.Info("Watching %s for file changes every %ds...", w.cfg.ProjectRoot, w.cfg.PollInterval)
-	for {
-		w.RunOnce()
-		time.Sleep(time.Duration(w.cfg.PollInterval) * time.Second)
-	}
+	logger.Info("Starting watcher...")
+
+	go func() {
+		for {
+			w.RunOnce()
+			time.Sleep(time.Duration(w.cfg.PollInterval) * time.Second)
+		}
+	}()
+
+	// Block forever so Start never returns
+	select {}
 }
 
 func (w *GoBuildWatcher) RunOnce() {
