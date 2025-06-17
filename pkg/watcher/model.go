@@ -23,7 +23,7 @@ type Config struct {
 }
 
 type GoBuildWatcher struct {
-	Cfg        *Config
-	ModTimeMap map[string]time.Time
-	Mu         sync.Mutex
+	cfg        *Config
+	modTimeMap map[string]time.Time
+	mu         sync.Mutex
 }

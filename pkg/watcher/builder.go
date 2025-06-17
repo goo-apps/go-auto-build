@@ -7,13 +7,14 @@ import (
 	"strings"
 )
 
+
 func (w *GoBuildWatcher) buildAndInstall() error {
-	cmdArgs := []string{"build", "-o", w.Cfg.OutputBinary}
-	if w.Cfg.BuildCommand != "" {
-		cmdArgs = strings.Fields(w.Cfg.BuildCommand)
+	cmdArgs := []string{"build", "-o", w.cfg.OutputBinary}
+	if w.cfg.BuildCommand != "" {
+		cmdArgs = strings.Fields(w.cfg.BuildCommand)
 	}
 	cmd := exec.Command("go", cmdArgs...)
-	cmd.Env = append(os.Environ(), "CONFIG_PATH="+w.Cfg.ConfigPath)
+	cmd.Env = append(os.Environ(), "CONFIG_PATH="+w.cfg.ConfigPath)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 
@@ -21,8 +22,8 @@ func (w *GoBuildWatcher) buildAndInstall() error {
 		return fmt.Errorf("build error: %w", err)
 	}
 
-	if w.Cfg.PostBuildMove {
-		mvCmd := exec.Command("sudo", "mv", w.Cfg.OutputBinary, w.Cfg.InstallPath)
+	if w.cfg.PostBuildMove {
+		mvCmd := exec.Command("sudo", "mv", w.cfg.OutputBinary, w.cfg.InstallPath)
 		mvCmd.Stdout = os.Stdout
 		mvCmd.Stderr = os.Stderr
 		if err := mvCmd.Run(); err != nil {
@@ -31,3 +32,4 @@ func (w *GoBuildWatcher) buildAndInstall() error {
 	}
 	return nil
 }
+

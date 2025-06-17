@@ -3,24 +3,24 @@ package watcher
 import (
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/goo-apps/go-auto-build/logger"
 )
 
-
 func NewWatcher(cfg *Config) *GoBuildWatcher {
 	return &GoBuildWatcher{
-		Cfg:        cfg,
-		ModTimeMap: make(map[string]time.Time),
+		cfg:        cfg,
+		modTimeMap: make(map[string]time.Time),
 	}
 }
 
 func (w *GoBuildWatcher) Start() {
-	logger.Info("Watching %s for *%s file changes every %ds...", w.Cfg.ProjectRoot, w.Cfg.WatchExt, w.Cfg.PollInterval)
+	logger.Info("Watching %s for file changes every %ds...", w.cfg.ProjectRoot, w.cfg.PollInterval)
 	for {
 		w.RunOnce()
-		time.Sleep(time.Duration(w.Cfg.PollInterval) * time.Second)
+		time.Sleep(time.Duration(w.cfg.PollInterval) * time.Second)
 	}
 }
 
@@ -41,24 +41,43 @@ func (w *GoBuildWatcher) RunOnce() {
 }
 
 func (w *GoBuildWatcher) checkChanges() (bool, error) {
-	w.Mu.Lock()
-	defer w.Mu.Unlock()
+	w.mu.Lock()
+	defer w.mu.Unlock()
 
 	var changed bool
-	err := filepath.WalkDir(w.Cfg.ProjectRoot, func(path string, d os.DirEntry, err error) error {
+	extFilters := strings.Split(w.cfg.WatchExt, ",")
+	outputAbs, _ := filepath.Abs(w.cfg.OutputBinary)
+
+	err := filepath.WalkDir(w.cfg.ProjectRoot, func(path string, d os.DirEntry, err error) error {
 		if err != nil || d.IsDir() {
 			return nil
 		}
-		if filepath.Ext(path) != w.Cfg.WatchExt {
+		fileAbs, _ := filepath.Abs(path)
+		if fileAbs == outputAbs || strings.Contains(path, ".git") || strings.HasSuffix(path, ".DS_Store") {
 			return nil
 		}
+
+		// Check extension filter
+		if len(extFilters) > 0 {
+			match := false
+			for _, ext := range extFilters {
+				if strings.HasSuffix(path, strings.TrimSpace(ext)) {
+					match = true
+					break
+				}
+			}
+			if !match {
+				return nil
+			}
+		}
+
 		info, err := os.Stat(path)
 		if err != nil {
 			return nil
 		}
-		last, seen := w.ModTimeMap[path]
+		last, seen := w.modTimeMap[path]
 		if !seen || info.ModTime().After(last) {
-			w.ModTimeMap[path] = info.ModTime()
+			w.modTimeMap[path] = info.ModTime()
 			changed = true
 		}
 		return nil

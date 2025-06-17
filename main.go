@@ -9,8 +9,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/goo-apps/go-auto-build/pkg/watcher"
 	"github.com/goo-apps/go-auto-build/logger"
+	"github.com/goo-apps/go-auto-build/pkg/watcher"
 )
 
 // CLI Entrypoint
